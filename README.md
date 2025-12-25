@@ -1,9 +1,12 @@
-# ⚡ USD - Ultimate Stepper Driver
+# USD - Ultimate Stepper Driver
 
 > A full-stack, DIY-friendly motion control system for precision multi-axis stepper motor coordination.
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)]()
 [![Platform](https://img.shields.io/badge/platform-ESP32--S3-green.svg)]()
+[![SDD](https://img.shields.io/badge/developed_with-SDD_+_AI-purple.svg)]()
+
+> **Note:** This project is being developed using the **Spec-Driven Development (SDD)** framework with AI assistance (GitHub Copilot). All specifications, architecture decisions, and implementation plans are documented in [`docs/specs/`](docs/specs/) for full transparency.
 
 ---
 
@@ -79,17 +82,17 @@ python -m gui
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Development Status
 
-| Phase | Status | Features |
-|-------|--------|----------|
-| **Discovery** | ✅ Complete | Vision, scope, constraints defined |
-| **Requirements** | 📋 Next | Detailed functional/non-functional specs |
-| **Architecture** | 📋 Planned | System design, protocols, interfaces |
-| **Tasks** | 📋 Planned | Implementation breakdown |
-| **Build** | 📋 Planned | Actual implementation |
+| Phase | Status | Description |
+|-------|--------|-------------|
+| **Discovery** | ✅ Complete | Vision, scope, constraints, distributed architecture |
+| **Requirements** | ✅ Complete | 70 requirements (37 Must, 26 Should, 7 Could) |
+| **Architecture** | ✅ Complete | Firmware + Software design, COBS protocol, multi-MCU sync |
+| **Tasks** | ✅ Complete | 10 phases, ~238 hours, 6 milestones defined |
+| **Build** | 🟡 Starting | Implementation begins with Phase P0 |
 
-See [docs/specs/](docs/specs/) for detailed specifications.
+See [docs/specs/](docs/specs/) for detailed specifications and [docs/dev/ROADMAP.md](docs/dev/ROADMAP.md) for milestones.
 
 ---
 
