@@ -1,6 +1,9 @@
 """
 USD - Ultimate Stepper Driver
 
+Copyright (c) 2025 Camilo Valencia. All rights reserved.
+Proprietary and confidential. See LICENSE file.
+
 Python host software for precision motion control with ESP32 firmware.
 
 Modules:

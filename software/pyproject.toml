@@ -7,8 +7,7 @@ name = "usd"
 version = "0.1.0"
 description = "Ultimate Stepper Driver - Python host software for precision motion control"
 readme = "README.md"
-# License not yet determined - see LICENSE file when ready
-# license = {text = "Proprietary"}
+license = {text = "Proprietary - All Rights Reserved"}
 authors = [
     {name = "Camilo Valencia"}
 ]

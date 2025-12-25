@@ -4,6 +4,9 @@
  * 
  * Ultimate Stepper Driver - ESP32-S3 Firmware
  * 
+ * @copyright Copyright (c) 2025 Camilo Valencia. All rights reserved.
+ *            Proprietary and confidential. See LICENSE file.
+ * 
  * @version 0.1.0
  * @date 2025-01-17
  */

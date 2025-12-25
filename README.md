@@ -113,7 +113,11 @@ This is a personal hobby project, but suggestions and ideas are welcome!
 
 ## 📝 License
 
-MIT License - See [LICENSE](LICENSE) for details.
+**Proprietary** — All rights reserved. See [LICENSE](LICENSE) for details.
+
+You may view the source code for educational purposes, but copying, modifying, or distributing the code without permission is prohibited.
+
+For licensing inquiries: camival1999@gmail.com
 
 ---
 
