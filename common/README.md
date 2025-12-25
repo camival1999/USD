@@ -18,6 +18,70 @@ common/
 
 ---
 
+## Communication Protocol
+
+### Physical Layer
+
+| Parameter | Value |
+|-----------|-------|
+| **Interface** | USB-CDC (virtual COM port) |
+| **Baud Rate** | N/A (USB manages rate) |
+| **Transport** | Reliable, bidirectional |
+
+### Framing: COBS (Consistent Overhead Byte Stuffing)
+
+COBS guarantees no zero bytes in the payload, using `0x00` as packet delimiter:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ [COBS-encoded payload] [0x00 delimiter]                 │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Properties:**
+- Overhead: 1–2 bytes per 254 payload bytes
+- No escape sequences needed
+- Self-synchronizing on packet boundaries
+- Max packet size: 254 bytes (v1.0)
+
+### Packet Structure
+
+```
+┌─────────┬────────┬─────────────┬──────────┐
+│ Msg ID  │ Length │   Payload   │  CRC-16  │
+│ (1 byte)│(1 byte)│ (0–250 B)   │ (2 bytes)│
+└─────────┴────────┴─────────────┴──────────┘
+```
+
+| Field | Size | Description |
+|-------|------|-------------|
+| Msg ID | 1 byte | Command/response identifier |
+| Length | 1 byte | Payload length (0–250) |
+| Payload | 0–250 bytes | Command data (little-endian) |
+| CRC-16 | 2 bytes | CRC-16-CCITT (polynomial 0x1021, init 0xFFFF) |
+
+### Message ID Ranges
+
+| Range | Purpose |
+|-------|---------|
+| 0x00–0x0F | System commands (ping, version, reset) |
+| 0x10–0x2F | Motion commands (move, stop, home) |
+| 0x30–0x3F | Configuration commands (set/get params) |
+| 0x40–0x4F | Telemetry requests |
+| 0x80–0xFF | Responses (0x80 + request ID) |
+
+### Data Types (Little-Endian)
+
+| Type | Size | Description |
+|------|------|-------------|
+| `u8` | 1 byte | Unsigned 8-bit |
+| `i16` | 2 bytes | Signed 16-bit |
+| `u16` | 2 bytes | Unsigned 16-bit |
+| `i32` | 4 bytes | Signed 32-bit |
+| `f32` | 4 bytes | IEEE 754 float |
+
+---
+
 ## Design Philosophy
 
 Both firmware and software need to agree on:
@@ -30,22 +94,8 @@ This folder defines these once, and code generators (or manual sync) ensure both
 
 ---
 
-## Protocol Design (TBD)
-
-| Aspect | Options to Consider |
-|--------|---------------------|
-| **Encoding** | Binary (compact, fast) vs JSON (readable, flexible) vs Protobuf (structured, versioned) |
-| **Framing** | SLIP, COBS, length-prefixed, or custom delimiters |
-| **Reliability** | Checksums, ACK/NAK, sequence numbers |
-| **Timing** | Sync vs async, streaming vs request-response |
-
-> Decision to be made in ARCHITECTURE phase.
-
----
-
 ## Related
 
-- [DISCOVERY.md](../docs/specs/DISCOVERY.md) — Project vision
-- [ARCHITECTURE.md](../docs/specs/ARCHITECTURE.md) — System design (protocol decisions here)
-- [firmware/](../firmware/) — C++ consumer
-- [software/](../software/) — Python consumer
+- [ARCHITECTURE.md](../docs/specs/ARCHITECTURE.md) — Full system design
+- [firmware/lib/usd_comms/](../firmware/lib/usd_comms/) — Firmware protocol implementation
+- [software/usd/comm/](../software/usd/) — Python protocol implementation
