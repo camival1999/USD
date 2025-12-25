@@ -40,13 +40,13 @@ P0 ──> P1 ──> P2 ──> P3 ──> P4 ──> P5 ──> P8 ──> P6 
 | **P2** | Driver Integration | TMC2208/2209, UART | 26h | Real TMC + steppers |
 | **P3** | Sensor Integration | AS5600, limits | 22h | Simulated initially |
 | **P4** | Closed-Loop | PID, position/velocity loops | 25h | Simulated encoder |
-| **P5** | Communication | COBS, USB protocol | 27h | Loopback + mock |
+| **P5** | Communication | COBS, USB, multi-MCU sync | 31h | Loopback + 2-node test |
 | **P8** | Safety & Polish | Faults, limits, watchdog | 21h | Fault injection |
 | **P6** | Host Software | Python package | 23h | 80% pytest coverage |
 | **P7** | GUI | PyQt6 interface | 26h | Manual + widget tests |
 | **P9** | Demos & Docs | Examples, guides | 14h | End-to-end validation |
 
-**Total Estimated: ~234 hours for v1.0**
+**Total Estimated: ~238 hours for v1.0**
 
 ---
 
@@ -175,9 +175,9 @@ P0 ──> P1 ──> P2 ──> P3 ──> P4 ──> P5 ──> P8 ──> P6 
 
 ---
 
-## Phase P5: Communication (27h)
+## Phase P5: Communication (31h)
 
-**Goal:** COBS-framed binary protocol over USB-CDC
+**Goal:** COBS-framed binary protocol over USB-CDC + multi-MCU sync
 
 | ID | Task | Description | Deps | Est. | Status |
 |----|------|-------------|------|------|--------|
@@ -189,6 +189,8 @@ P0 ──> P1 ──> P2 ──> P3 ──> P4 ──> P5 ──> P8 ──> P6 
 | P5.6 | CommTask | Receive loop, CRC check, dispatch | P5.5 | 4h | ⬜ |
 | P5.7 | Command handlers | Move, stop, home, set PID, get status | P5.6, P1.5, P4.6 | 6h | ⬜ |
 | P5.8 | Response/event sending | ACK, NAK, STATUS, FAULT packets | P5.6 | 3h | ⬜ |
+| P5.9 | Node addressing | Unique node ID (1-254), broadcast (0) | P5.4 | 2h | ⬜ |
+| P5.10 | Multi-MCU sync test | Test GPIO sync line with 2 ESP32s | P5.6, P0.2 | 4h | ⬜ |
 
 **Definition of Done:**
 - [ ] Host sends command, MCU responds with ACK

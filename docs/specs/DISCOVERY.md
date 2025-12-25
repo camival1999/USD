@@ -50,6 +50,17 @@
 | **Real-time** | As close to hard real-time as possible on ESP32 |
 | **Build System** | PlatformIO | For all MCU firmware |
 
+### Network Topology
+
+| Aspect | Design |
+|--------|--------|
+| **Architecture** | **One ESP32-S3 per motor axis** (distributed network) |
+| **Host Role** | Coordinates all nodes, trajectory planning, UI |
+| **Node Role** | Real-time control of single axis (motor, encoder, limits) |
+| **Max Nodes** | 12 (practical limit for hobbyist setups) |
+| **Sync (v1.0)** | GPIO sync line (~1-5µs latency) |
+| **Sync (v1.5+)** | RS-485 or CAN FD broadcast for daisy-chain |
+
 ### Future MCU Support (Post-v1.0)
 
 | MCU | Priority | Challenge |
@@ -61,13 +72,13 @@
 
 | Priority | Interface | Notes |
 |----------|-----------|-------|
-| **v1.0 Must** | UART | Primary MCU↔driver communication |
-| **v1.0 Must** | USB | MCU↔PC/RPi connection |
-| **v1.0 Must** | SPI | Fast MCU↔driver/sensor |
-| **v1.0 Should** | I2C | Sensors, displays |
-| **Future** | CAN | Industrial expansion |
-| **Future** | MQTT/WiFi | Wireless control |
-| **Future** | ESP-NOW | Multi-ESP32 chaining |
+| **v1.0 Must** | UART | MCU↔TMC driver communication |
+| **v1.0 Must** | USB-CDC | Single MCU↔Host connection |
+| **v1.0 Must** | GPIO Sync Line | Multi-MCU motion synchronization |
+| **v1.0 Must** | SPI/I2C | Sensors (AS5600, BME680) |
+| **v1.5+ Should** | RS-485 | Daisy-chain bus for multi-MCU network |
+| **v1.5+ Could** | CAN FD | Alternative daisy-chain (64-byte payloads) |
+| **Future** | MQTT/WiFi | Wireless control, monitoring |
 
 ---
 
@@ -157,10 +168,13 @@
 | Field | Value |
 |-------|-------|
 | **Project Type** | Full-stack motion control (firmware + software) |
+| **Architecture** | **Distributed** — one ESP32-S3 per axis |
 | **Primary MCU** | ESP32-S3 (via PlatformIO) |
 | **Primary Host** | PC or Raspberry Pi 5 |
 | **Motor Types (v1.0)** | Stepper only |
-| **Max Axes** | 12 (focus on ≤6 for v1.0) |
+| **Max Nodes** | 12 (one axis each, focus on ≤6 for v1.0) |
+| **Sync (v1.0)** | GPIO line for coordinated motion start |
+| **Sync (v1.5+)** | RS-485 or CAN FD daisy-chain bus |
 | **Control** | Nested loops: position (100Hz-5kHz) → velocity → torque |
 | **Real-time** | Hard real-time goal on MCU |
 | **Pacing** | Hobby/personal project |

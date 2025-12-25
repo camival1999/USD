@@ -4,7 +4,6 @@
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)]()
 [![Platform](https://img.shields.io/badge/platform-ESP32--S3-green.svg)]()
-[![License](https://img.shields.io/badge/license-MIT-yellow.svg)]()
 
 ---
 

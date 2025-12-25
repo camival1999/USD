@@ -7,7 +7,8 @@ name = "usd"
 version = "0.1.0"
 description = "Ultimate Stepper Driver - Python host software for precision motion control"
 readme = "README.md"
-license = {text = "MIT"}
+# License not yet determined - see LICENSE file when ready
+# license = {text = "Proprietary"}
 authors = [
     {name = "Camilo Valencia"}
 ]
@@ -15,7 +16,6 @@ requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",

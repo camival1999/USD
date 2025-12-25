@@ -22,11 +22,15 @@
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-201 | System shall coordinate 2+ motors to execute synchronized motion (≤1ms sync) | Must | Draft |
+| FR-201 | System shall coordinate 2+ MCU nodes for synchronized motion (≤1ms) | Must | Draft |
 | FR-202 | System shall support linear interpolation across multiple axes | Must | Draft |
 | FR-203 | System shall support spline interpolation for smooth curved paths | Should | Draft |
-| FR-204 | System shall support at least 6 axes simultaneously | Should | Draft |
-| FR-205 | System shall support up to 12 axes | Could | Draft |
+| FR-204 | System shall support at least 6 MCU nodes simultaneously | Should | Draft |
+| FR-205 | System shall support up to 12 MCU nodes | Could | Draft |
+| FR-210 | Each MCU node shall have unique address (1-254, 0 = broadcast) | Must | Draft |
+| FR-211 | Host shall send broadcast commands to all nodes simultaneously | Must | Draft |
+| FR-212 | MCU nodes shall synchronize motion start via GPIO sync line | Must | Draft |
+| FR-213 | System shall support RS-485 or CAN FD daisy-chain (v1.5+) | Should | Draft |
 
 ### FR-300: Driver Support
 
@@ -156,16 +160,16 @@
 | Category | Must | Should | Could | Total |
 |----------|------|--------|-------|-------|
 | Motor Control | 5 | 2 | 0 | 7 |
-| Multi-Axis | 2 | 2 | 1 | 5 |
+| Multi-Axis/Network | 5 | 3 | 1 | 9 |
 | Drivers | 1 | 3 | 0 | 4 |
 | Sensors | 2 | 3 | 1 | 6 |
 | Communication | 3 | 1 | 1 | 5 |
 | GUI | 4 | 2 | 2 | 8 |
 | Safety | 3 | 3 | 1 | 7 |
 | Demo | 2 | 1 | 1 | 4 |
-| **Functional Total** | **22** | **17** | **7** | **46** |
+| **Functional Total** | **25** | **18** | **7** | **50** |
 | **Non-Functional** | **12** | **8** | **0** | **20** |
-| **Grand Total** | **34** | **25** | **7** | **66** |
+| **Grand Total** | **37** | **26** | **7** | **70** |
 
 ---
 
