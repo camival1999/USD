@@ -17,7 +17,7 @@
 // Forward declarations to avoid circular includes
 namespace usd {
     class IDriver;
-    class McpwmStepper;
+    class IStepGenerator;
 }
 
 namespace usd {
@@ -158,10 +158,10 @@ public:
     void attachDriver(IDriver* driver);
 
     /**
-     * @brief Attach MCPWM stepper for step pulse generation
-     * @param stepper Pointer to McpwmStepper
+     * @brief Attach step generator for step pulse generation
+     * @param stepper Pointer to IStepGenerator implementation
      */
-    void attachStepper(McpwmStepper* stepper);
+    void attachStepper(IStepGenerator* stepper);
 
     /**
      * @brief Check if hardware is attached
@@ -336,7 +336,7 @@ public:
 
 private:
     IDriver* driver_;
-    McpwmStepper* stepper_;
+    IStepGenerator* stepper_;
     MotionConfig config_;
     MotionState state_;
 

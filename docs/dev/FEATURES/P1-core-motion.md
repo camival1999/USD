@@ -62,9 +62,12 @@ From REQUIREMENTS.md:
 - Sub-microsecond jitter (hardware timing)
 - **18 unit tests** for configuration and state management
 
-### P1.4: Timer ISR Fallback (DEFERRED)
-- Software timer fallback - not needed with MCPWM
-- Can be added later for non-ESP32 platforms
+### P1.4: Timer ISR Fallback
+- IStepGenerator abstract interface for all step pulse generators
+- TimerStepper implementation using esp_timer API with ISR dispatch
+- Max frequency: 50 kHz (vs MCPWM's 500 kHz)
+- Updated McpwmStepper and MotionController to use interface
+- **18 unit tests** for TimerStepper functionality
 
 ### P1.5: MotionController
 - Central motion state machine
@@ -88,7 +91,7 @@ From REQUIREMENTS.md:
 - **10 unit tests** for S-curve behavior
 
 ### P1.8: Motion Unit Tests
-- **93 total tests** passing across all test suites
+- **111 total tests** passing across all test suites
 - Exceeds 80% coverage target
 
 ## Files Created
@@ -97,10 +100,13 @@ From REQUIREMENTS.md:
 | File | Lines | Purpose |
 |------|-------|---------|
 | `idriver.h` | ~120 | Abstract driver interface |
+| `istep_generator.h` | ~197 | Abstract step generator interface |
 | `step_dir_driver.h` | ~90 | GPIO driver header |
 | `step_dir_driver.cpp` | ~150 | GPIO driver implementation |
 | `mcpwm_stepper.h` | ~120 | MCPWM step generator header |
 | `mcpwm_stepper.cpp` | ~180 | MCPWM implementation |
+| `timer_stepper.h` | ~273 | Timer ISR stepper header |
+| `timer_stepper.cpp` | ~299 | Timer ISR implementation |
 | `library.json` | ~15 | PlatformIO library config |
 | `README.md` | ~80 | Library documentation |
 
@@ -119,6 +125,7 @@ From REQUIREMENTS.md:
 |------|-------|---------|
 | `test_driver.cpp` | 16 | Driver interface tests |
 | `test_mcpwm.cpp` | 18 | MCPWM stepper tests |
+| `test_timer.cpp` | 18 | Timer ISR stepper tests |
 | `test_motion.cpp` | 20 | Motion controller tests |
 | `test_trajectory.cpp` | 26 | Trajectory tests (16 trap + 10 S-curve) |
 
@@ -131,10 +138,11 @@ test_cobs          7     PASSED
 test_crc16         6     PASSED
 test_driver       16     PASSED
 test_mcpwm        18     PASSED
+test_timer        18     PASSED
 test_motion       20     PASSED
 test_trajectory   26     PASSED
 ─────────────────────────────────
-TOTAL             93     PASSED
+TOTAL            111     PASSED
 ```
 
 ## Build Status
@@ -147,9 +155,10 @@ TOTAL             93     PASSED
 ## Implementation Notes
 
 ### MCPWM vs Timer ISR
-- MCPWM provides hardware-timed pulses with zero CPU overhead during stepping
-- Maximum frequency 500kHz (limited by stepper driver requirements)
-- Timer ISR fallback deferred as MCPWM covers all use cases
+- MCPWM provides hardware-timed pulses with zero CPU overhead during stepping (500 kHz max)
+- TimerStepper uses esp_timer API with ISR dispatch for software-based stepping (50 kHz max)
+- IStepGenerator interface allows polymorphic selection at runtime
+- Use MCPWM for high-speed applications, TimerStepper for portability/fallback
 
 ### S-Curve Complexity
 - 7-phase profile requires careful phase boundary tracking
@@ -163,7 +172,7 @@ TOTAL             93     PASSED
 
 ## Next Steps
 
-Phase P2: Closed-Loop Control
-- Quadrature encoder interface
-- Position feedback loop
-- Stall detection algorithms
+Phase P2: Driver Integration
+- TMC2208/2209 UART interface
+- Microstepping configuration
+- Current limiting and StallGuard

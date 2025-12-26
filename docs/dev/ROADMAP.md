@@ -57,12 +57,14 @@ See [TASKS.md](../specs/TASKS.md) for detailed task breakdown.
 
 **Achievements:**
 - ✅ IDriver abstract interface for motor drivers
+- ✅ IStepGenerator abstract interface for step pulse generators
 - ✅ GenericStepDirDriver GPIO implementation (16 tests)
 - ✅ MCPWM step pulse generator (1Hz-500kHz, 18 tests)
+- ✅ TimerStepper ISR fallback (1Hz-50kHz, 18 tests)
 - ✅ MotionController state machine (20 tests)
 - ✅ TrapezoidalTrajectory profiles (16 tests)
 - ✅ S-curve jerk-limited profiles (10 tests)
-- ✅ 93 total native tests passing
+- ✅ 111 total native tests passing
 
 ### v0.1.0 - P0 Foundation (2025-05-26)
 

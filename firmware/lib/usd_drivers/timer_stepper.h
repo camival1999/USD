@@ -1,98 +1,105 @@
 /**
- * @file mcpwm_stepper.h
- * @brief MCPWM-based step pulse generator for ESP32
+ * @file timer_stepper.h
+ * @brief Timer-based step pulse generator for ESP32 (fallback implementation)
  *
- * Uses the ESP32's Motor Control PWM (MCPWM) peripheral to generate
- * precise, hardware-timed step pulses at high frequencies (up to 500kHz).
+ * Uses ESP32 hardware timer with ISR to generate step pulses. This is a
+ * fallback implementation for platforms/cases where MCPWM is unavailable.
+ * Lower maximum frequency than MCPWM but still provides hardware timing.
  *
  * Key features:
- * - Hardware timing eliminates jitter from task scheduling
- * - Automatic frequency adjustment during motion
- * - Integrates with IDriver for seamless switching
+ * - Uses esp_timer for microsecond-precision timing
+ * - Maximum 50kHz (vs MCPWM's 500kHz) due to ISR overhead
+ * - Same IStepGenerator interface for interchangeable use
  *
  * @version 0.1.0
- * @date 2025-05-27
+ * @date 2025-05-28
  */
 
-#ifndef USD_MCPWM_STEPPER_H
-#define USD_MCPWM_STEPPER_H
+#ifndef USD_TIMER_STEPPER_H
+#define USD_TIMER_STEPPER_H
 
-#include "idriver.h"
 #include "istep_generator.h"
 
 #ifdef ARDUINO
 #include <esp32-hal.h>
-#include "driver/mcpwm.h"
-#include "soc/mcpwm_periph.h"
+#include "esp_timer.h"
 #endif
 
 namespace usd {
 
 /**
- * @brief MCPWM unit configuration
+ * @brief Timer configuration for TimerStepper
  */
-struct McpwmConfig {
-    uint8_t unit;          ///< MCPWM unit (0 or 1 on ESP32-S3)
-    uint8_t timer;         ///< Timer within unit (0, 1, or 2)
-    uint8_t operator_id;   ///< Operator (0 or 1)
-    uint8_t output;        ///< Output A or B (MCPWM_OPR_A = 0, MCPWM_OPR_B = 1)
+struct TimerConfig {
+    const char* timer_name;  ///< Name for the esp_timer (for debugging)
+    bool skip_unhandled;     ///< Skip timer callbacks if previous hasn't finished
+    
+    /**
+     * @brief Default configuration
+     */
+    static TimerConfig defaultConfig() {
+        return TimerConfig{
+            .timer_name = "step_timer",
+            .skip_unhandled = true
+        };
+    }
 };
 
-// StepGenState is now defined in istep_generator.h
-
 /**
- * @brief MCPWM-based step pulse generator
+ * @brief Timer-based step pulse generator (ISR fallback)
  *
- * This class wraps the ESP32 MCPWM peripheral to generate step pulses
- * with hardware-level timing accuracy. It works alongside an IDriver
- * implementation (for direction and enable control).
+ * This class uses the ESP32 esp_timer API to generate step pulses via
+ * timer interrupt. It's a fallback for when MCPWM isn't available or
+ * when a simpler implementation is preferred.
  *
- * The MCPWM generates a precise PWM signal where each pulse is a step.
- * The frequency directly determines stepping speed.
+ * Performance characteristics:
+ * - Max frequency: 50 kHz (limited by ISR overhead)
+ * - Timing accuracy: ~1 microsecond
+ * - CPU impact: Higher than MCPWM due to ISR execution
+ *
+ * The timer ISR toggles the GPIO to create step pulses. Each pulse
+ * consists of a rising edge (step trigger) and falling edge (reset).
  *
  * Thread Safety:
  * - setFrequency() and stop() can be called from any task
  * - start() should be called from MotionTask only
- * - Internal state is protected by critical sections
+ * - Step counting is atomic
  *
  * Usage:
  * @code
- *   McpwmConfig config = {
- *       .unit = 0,
- *       .timer = 0,
- *       .operator_id = 0,
- *       .output = 0
- *   };
- *   McpwmStepper stepper(18, config);  // Step pin GPIO 18
+ *   TimerConfig config = TimerConfig::defaultConfig();
+ *   TimerStepper stepper(18, config);  // Step pin GPIO 18
  *
+ *   stepper.init();
  *   stepper.setFrequency(10000);  // 10 kHz
  *   stepper.start();
  *   // ... motor moving ...
  *   stepper.stop();
  * @endcode
  */
-class McpwmStepper : public IStepGenerator {
+class TimerStepper : public IStepGenerator {
 public:
     /**
-     * @brief Construct MCPWM step generator
+     * @brief Construct timer-based step generator
      *
      * @param step_pin GPIO pin for step output
-     * @param config MCPWM unit/timer/operator configuration
+     * @param config Timer configuration
      * @param pulse_width_us Step pulse width in microseconds (default 3)
      */
-    McpwmStepper(int8_t step_pin, const McpwmConfig& config, uint16_t pulse_width_us = 3);
+    TimerStepper(int8_t step_pin, const TimerConfig& config = TimerConfig::defaultConfig(), 
+                 uint16_t pulse_width_us = 3);
 
     /**
-     * @brief Destructor - stops PWM and releases resources
+     * @brief Destructor - stops timer and releases resources
      */
-    ~McpwmStepper();
+    ~TimerStepper();
 
     // ─────────────────────────────────────────────────────────────────────
     // Control
     // ─────────────────────────────────────────────────────────────────────
 
     /**
-     * @brief Initialize MCPWM peripheral
+     * @brief Initialize timer peripheral
      *
      * Must be called before using the stepper. Can be called multiple
      * times to reinitialize.
@@ -141,7 +148,7 @@ public:
      * For motion profiles, the TrajectoryInterpolator calls this
      * periodically to implement acceleration curves.
      *
-     * @param frequency_hz Steps per second (1 Hz to 500 kHz)
+     * @param frequency_hz Steps per second (1 Hz to 50 kHz)
      * @return true if frequency was set, false if out of range
      */
     bool setFrequency(uint32_t frequency_hz) override;
@@ -154,13 +161,13 @@ public:
 
     /**
      * @brief Get maximum supported frequency
-     * @return Maximum frequency in Hz (typically 500 kHz)
+     * @return Maximum frequency in Hz (50 kHz for timer-based)
      */
     uint32_t getMaxFrequency() const override { return MAX_FREQUENCY; }
 
     /**
      * @brief Get minimum supported frequency
-     * @return Minimum frequency in Hz (typically 1 Hz)
+     * @return Minimum frequency in Hz (1 Hz)
      */
     uint32_t getMinFrequency() const override { return MIN_FREQUENCY; }
 
@@ -171,10 +178,9 @@ public:
     /**
      * @brief Get steps generated since last reset
      *
-     * This is an approximate count based on frequency and time.
-     * For precise position tracking, use encoder feedback.
+     * This is an accurate count from the ISR.
      *
-     * @return Approximate step count
+     * @return Step count
      */
     uint32_t getStepCount() const override;
 
@@ -186,7 +192,7 @@ public:
     /**
      * @brief Set target step count for auto-stop
      *
-     * When step count reaches this value, PWM stops automatically.
+     * When step count reaches this value, timer stops automatically.
      * Set to 0 to disable auto-stop (continuous mode).
      *
      * @param target_steps Number of steps to generate (0 = continuous)
@@ -203,9 +209,9 @@ public:
     int8_t getStepPin() const override { return step_pin_; }
 
     /**
-     * @brief Get MCPWM configuration
+     * @brief Get timer configuration
      */
-    const McpwmConfig& getConfig() const { return config_; }
+    const TimerConfig& getConfig() const { return config_; }
 
     /**
      * @brief Get pulse width in microseconds
@@ -213,11 +219,11 @@ public:
     uint16_t getPulseWidth() const override { return pulse_width_us_; }
 
 private:
-    static constexpr uint32_t MIN_FREQUENCY = 1;       // 1 Hz
-    static constexpr uint32_t MAX_FREQUENCY = 500000;  // 500 kHz
+    static constexpr uint32_t MIN_FREQUENCY = 1;      ///< 1 Hz minimum
+    static constexpr uint32_t MAX_FREQUENCY = 50000;  ///< 50 kHz maximum (ISR overhead limit)
 
     int8_t step_pin_;
-    McpwmConfig config_;
+    TimerConfig config_;
     uint16_t pulse_width_us_;
     
     StepGenState state_;
@@ -227,20 +233,40 @@ private:
     uint32_t target_steps_;
     
     bool initialized_;
+    
+    // Pulse state tracking for two-phase toggle (high then low)
+    volatile bool pulse_high_;
 
+#ifdef ARDUINO
+    esp_timer_handle_t step_timer_;
+    esp_timer_handle_t pulse_end_timer_;  // For ending the pulse after pulse_width_us
+    
     /**
-     * @brief Configure PWM duty cycle for desired pulse width
+     * @brief Timer ISR callback for step pulse generation
+     * @param arg Pointer to TimerStepper instance
      */
-    void updateDutyCycle();
+    static void IRAM_ATTR stepTimerCallback(void* arg);
+    
+    /**
+     * @brief Timer callback to end the pulse (bring GPIO low)
+     * @param arg Pointer to TimerStepper instance
+     */
+    static void IRAM_ATTR pulseEndCallback(void* arg);
+#endif
 
     /**
-     * @brief Calculate duty cycle percentage for given frequency
+     * @brief Calculate timer period from frequency
      * @param freq_hz Frequency in Hz
-     * @return Duty cycle percentage (0.0 - 100.0)
+     * @return Period in microseconds
      */
-    float calculateDuty(uint32_t freq_hz) const;
+    uint64_t calculatePeriodUs(uint32_t freq_hz) const;
+    
+    /**
+     * @brief Update timer period when frequency changes
+     */
+    void updateTimerPeriod();
 };
 
 }  // namespace usd
 
-#endif  // USD_MCPWM_STEPPER_H
+#endif  // USD_TIMER_STEPPER_H

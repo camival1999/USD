@@ -11,12 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- *Nothing yet*
+*No unreleased changes*
 
 ---
 
-## [v0.2.0] - 2025-05-27
+## [v0.2.0] - 2025-05-28
 
 ### Added
 
@@ -35,6 +34,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hardware-timed pulses from 1Hz to 500kHz
 - Sub-microsecond jitter (hardware timing)
 - 18 unit tests in `firmware/test/test_mcpwm/`
+
+#### P1.4: Timer ISR Fallback
+- IStepGenerator abstract interface in `firmware/lib/usd_drivers/istep_generator.h`
+  - Base class for all step pulse generators
+  - Methods: `init()`, `start()`, `stop()`, `setFrequency()`, `getStepCount()`
+- TimerStepper implementation in `firmware/lib/usd_drivers/timer_stepper.h/.cpp`
+  - Software timer fallback using esp_timer API with ISR dispatch
+  - Max frequency: 50 kHz (vs MCPWM's 500 kHz)
+  - Platform-independent with native stubs for testing
+- Updated McpwmStepper to inherit from IStepGenerator interface
+- Updated MotionController to use polymorphic IStepGenerator* pointer
+- 18 unit tests in `firmware/test/test_timer/`
 
 #### P1.5: MotionController
 - Central motion state machine in `firmware/lib/usd_core/motion_controller.h/.cpp`
@@ -59,9 +70,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modified `firmware/lib/usd_drivers/library.json` frameworks to `"*"` for native test compatibility
 - Removed `usd_drivers` from `lib_ignore` in native test environment
 
+### Fixed
+- Declaration order bug in test_motion.cpp causing use-after-free crash
+  - Controller must be declared after driver/stepper for correct destruction order
+
 ### Test Results
-- **93 total tests** passing across 6 test suites
-- Test suites: test_cobs (7), test_crc16 (6), test_driver (16), test_mcpwm (18), test_motion (20), test_trajectory (26)
+- **111 total tests** passing across 7 test suites
+- Test suites: test_cobs (7), test_crc16 (6), test_driver (16), test_mcpwm (18), test_timer (18), test_motion (20), test_trajectory (26)
 
 ---
 
@@ -176,6 +191,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Type | Highlights |
 |---------|------|------|------------|
+| v0.2.0 | 2025-05-27 | Phase | P1 Core Motion complete (111 tests) |
 | v0.1.0 | 2025-05-26 | Phase | P0 Foundation complete |
 | v0.0.0 | 2025-01-17 | Initial | Project setup |
 

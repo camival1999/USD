@@ -8,7 +8,7 @@
 
 #include "motion_controller.h"
 #include "idriver.h"
-#include "mcpwm_stepper.h"
+#include "istep_generator.h"
 
 #ifdef ARDUINO
 #include <Arduino.h>
@@ -88,7 +88,7 @@ void MotionController::attachDriver(IDriver* driver)
     driver_ = driver;
 }
 
-void MotionController::attachStepper(McpwmStepper* stepper)
+void MotionController::attachStepper(IStepGenerator* stepper)
 {
     stepper_ = stepper;
 }

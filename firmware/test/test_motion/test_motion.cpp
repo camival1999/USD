@@ -59,9 +59,11 @@ void test_motion_controller_hardware_not_attached_initially(void)
 
 void test_motion_controller_attach_hardware(void)
 {
-    MotionController controller;
+    // Declare driver and stepper BEFORE controller so they outlive it
+    // (destructors run in reverse order of declaration)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
     McpwmStepper stepper(18, test_mcpwm_config);
+    MotionController controller;
     
     controller.attachDriver(&driver);
     controller.attachStepper(&stepper);
@@ -91,8 +93,9 @@ void test_motion_controller_enable_without_driver_fails(void)
 
 void test_motion_controller_enable_with_driver(void)
 {
-    MotionController controller;
+    // Declare driver BEFORE controller (destructors run in reverse order)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
+    MotionController controller;
     
     controller.attachDriver(&driver);
     
@@ -103,8 +106,9 @@ void test_motion_controller_enable_with_driver(void)
 
 void test_motion_controller_disable(void)
 {
-    MotionController controller;
+    // Declare driver BEFORE controller (destructors run in reverse order)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
+    MotionController controller;
     
     controller.attachDriver(&driver);
     controller.enable();
@@ -127,10 +131,11 @@ void test_motion_controller_move_without_hardware_fails(void)
 
 void test_motion_controller_move_to_starts_motion(void)
 {
-    MotionController controller;
+    // Declare driver and stepper BEFORE controller (destructors run in reverse order)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
     McpwmStepper stepper(18, test_mcpwm_config);
     stepper.init();
+    MotionController controller;
     
     controller.attachDriver(&driver);
     controller.attachStepper(&stepper);
@@ -143,10 +148,11 @@ void test_motion_controller_move_to_starts_motion(void)
 
 void test_motion_controller_move_by_relative(void)
 {
-    MotionController controller;
+    // Declare driver and stepper BEFORE controller (destructors run in reverse order)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
     McpwmStepper stepper(18, test_mcpwm_config);
     stepper.init();
+    MotionController controller;
     
     controller.attachDriver(&driver);
     controller.attachStepper(&stepper);
@@ -162,10 +168,11 @@ void test_motion_controller_move_by_relative(void)
 
 void test_motion_controller_move_to_same_position_goes_to_holding(void)
 {
-    MotionController controller;
+    // Declare driver and stepper BEFORE controller (destructors run in reverse order)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
     McpwmStepper stepper(18, test_mcpwm_config);
     stepper.init();
+    MotionController controller;
     
     controller.attachDriver(&driver);
     controller.attachStepper(&stepper);
@@ -194,10 +201,11 @@ void test_motion_controller_get_status(void)
 
 void test_motion_controller_distance_to_go(void)
 {
-    MotionController controller;
+    // Declare driver and stepper BEFORE controller (destructors run in reverse order)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
     McpwmStepper stepper(18, test_mcpwm_config);
     stepper.init();
+    MotionController controller;
     
     controller.attachDriver(&driver);
     controller.attachStepper(&stepper);
@@ -254,10 +262,11 @@ void test_motion_controller_set_acceleration(void)
 
 void test_motion_controller_emergency_stop(void)
 {
-    MotionController controller;
+    // Declare driver and stepper BEFORE controller (destructors run in reverse order)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
     McpwmStepper stepper(18, test_mcpwm_config);
     stepper.init();
+    MotionController controller;
     
     controller.attachDriver(&driver);
     controller.attachStepper(&stepper);
@@ -272,10 +281,11 @@ void test_motion_controller_emergency_stop(void)
 
 void test_motion_controller_stop_starts_deceleration(void)
 {
-    MotionController controller;
+    // Declare driver and stepper BEFORE controller (destructors run in reverse order)
     GenericStepDirDriver driver(test_driver_pins, test_driver_timing);
     McpwmStepper stepper(18, test_mcpwm_config);
     stepper.init();
+    MotionController controller;
     
     controller.attachDriver(&driver);
     controller.attachStepper(&stepper);
