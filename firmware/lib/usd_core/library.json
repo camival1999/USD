@@ -1,0 +1,16 @@
+{
+    "name": "usd_core",
+    "version": "0.1.0",
+    "description": "Core motion control algorithms for USD (MotionController, Trajectory, PID)",
+    "keywords": ["motion", "control", "trajectory", "pid", "stepper"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/user/usd"
+    },
+    "license": "MIT",
+    "frameworks": "*",
+    "platforms": ["espressif32", "native"],
+    "dependencies": {
+        "usd_drivers": "*"
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "name": "usd_drivers",
+    "version": "0.1.0",
+    "description": "Motor driver abstractions for USD (IDriver interface, TMC, GPIO)",
+    "keywords": ["stepper", "motor", "driver", "tmc2208", "tmc2209", "gpio"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/user/usd"
+    },
+    "license": "MIT",
+    "frameworks": "*",
+    "platforms": ["espressif32", "native"]
+}

@@ -61,11 +61,12 @@ They require a C/C++ compiler:
 
 | Library | Purpose | Status |
 |---------|---------|--------|
-| `usd_core` | Control loops (PID, feedforward), motion profiles | 📋 Planned |
-| `usd_drivers` | Hardware driver abstractions | 📋 Planned |
-| `usd_sensors` | Sensor reading and processing | 📋 Planned |
-| `usd_comms` | Host communication protocol | 📋 Planned |
-| `usd_safety` | Watchdog, thermal monitoring, alerts | 📋 Planned |
+| `usd_core` | Motion controller, trajectory profiles (trapezoidal, S-curve) | ✅ Complete (P1) |
+| `usd_drivers` | IDriver interface, GenericStepDirDriver, MCPWM stepper | ✅ Complete (P1) |
+| `usd_protocol` | COBS, CRC-16, message definitions | ✅ Complete (P0) |
+| `usd_sensors` | Sensor reading and processing | 📋 Planned (P3) |
+| `usd_comms` | Host communication protocol | 📋 Planned (P5) |
+| `usd_safety` | Watchdog, thermal monitoring, alerts | 📋 Planned (P8) |
 
 ---
 

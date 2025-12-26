@@ -12,16 +12,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Complete SDD specification suite (2025-01-17)
-  - DISCOVERY.md: Vision, goals, constraints, MoSCoW scope
-  - REQUIREMENTS.md: 66 requirements (34 Must, 25 Should, 7 Could)
-  - ARCHITECTURE.md: System design, protocols, firmware/software structure
-  - TASKS.md: 10-phase implementation plan (~234 hours)
-- Project folder structure
-  - `firmware/` with PlatformIO configuration and library stubs
-  - `software/` with Python package structure (pyproject.toml)
-  - `common/`, `demos/`, `scripts/` directories
-- Development tracking (ROADMAP.md with milestones)
+- *Nothing yet*
+
+---
+
+## [v0.2.0] - 2025-05-27
+
+### Added
+
+#### P1.1: IDriver Interface
+- Abstract driver interface in `firmware/lib/usd_drivers/idriver.h`
+- Methods: `enable()`, `disable()`, `step()`, `setDirection()`, `getPosition()`
+- Fault detection and timing configuration support
+
+#### P1.2: GenericStepDirDriver
+- GPIO-based step/direction driver in `firmware/lib/usd_drivers/step_dir_driver.h/.cpp`
+- Platform-independent with native stubs for testing
+- 16 unit tests in `firmware/test/test_driver/`
+
+#### P1.3: MCPWM Step Generator
+- ESP32 MCPWM-based step pulse generator in `firmware/lib/usd_drivers/mcpwm_stepper.h/.cpp`
+- Hardware-timed pulses from 1Hz to 500kHz
+- Sub-microsecond jitter (hardware timing)
+- 18 unit tests in `firmware/test/test_mcpwm/`
+
+#### P1.5: MotionController
+- Central motion state machine in `firmware/lib/usd_core/motion_controller.h/.cpp`
+- States: IDLE → ACCEL → CRUISE → DECEL → HOLDING → ERROR
+- Position mode (`moveTo`) and relative moves (`moveBy`)
+- Emergency stop and fault handling
+- 20 unit tests in `firmware/test/test_motion/`
+
+#### P1.6: TrajectoryInterpolator
+- Trapezoidal trajectory profiles in `firmware/lib/usd_core/trajectory.h/.cpp`
+- Linear acceleration/deceleration with automatic triangular profile for short moves
+- Look-ahead functions: `getVelocityAt()`, `getPositionAt()`
+- 16 unit tests for trapezoidal profiles
+
+#### P1.7: S-Curve Profile
+- 7-phase jerk-limited acceleration profiles
+- Phases: J+, A, J-, C, J-, D, J+ (smoother motion with reduced vibration)
+- Automatic profile reduction for short moves
+- 10 unit tests for S-curve behavior
+
+### Changed
+- Modified `firmware/lib/usd_drivers/library.json` frameworks to `"*"` for native test compatibility
+- Removed `usd_drivers` from `lib_ignore` in native test environment
+
+### Test Results
+- **93 total tests** passing across 6 test suites
+- Test suites: test_cobs (7), test_crc16 (6), test_driver (16), test_mcpwm (18), test_motion (20), test_trajectory (26)
 
 ---
 

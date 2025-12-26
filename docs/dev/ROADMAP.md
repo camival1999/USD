@@ -1,10 +1,10 @@
 # Roadmap
 
-> **Last Updated:** 2025-05-26 | **Maintained by:** Scribe Agent
+> **Last Updated:** 2025-05-27 | **Maintained by:** Scribe Agent
 
 ---
 
-## Current Version: v0.1.0 (P0 Foundation Complete)
+## Current Version: v0.2.0 (P1 Core Motion Complete)
 
 ---
 
@@ -12,7 +12,7 @@
 
 | Milestone | Target Date | Status | Key Features | Notes |
 |-----------|-------------|--------|--------------|-------|
-| M1: Motor Spins | — | 📋 Planned | TMC2208, MCPWM, open-loop | Phase P2 complete |
+| M1: Motor Spins | — | 🟡 In Progress | TMC2208, MCPWM, open-loop | Need P2 driver integration |
 | M2: Protocol Works | — | 📋 Planned | COBS, USB-CDC, commands | Phase P5 complete |
 | M3: Closed Loop | — | 📋 Planned | PID, AS5600, position control | Phase P3+P4 complete |
 | M4: Python Control | — | 📋 Planned | usd package, trajectory gen | Phase P6 complete |
@@ -32,12 +32,12 @@
 
 ## Phase Overview
 
-Total estimated: **~234 hours** for v1.0 | **Completed: ~16 hours**
+Total estimated: **~234 hours** for v1.0 | **Completed: ~50 hours**
 
 | Phase | Name | Hours | Status |
 |-------|------|-------|--------|
 | P0 | Foundation | 16h | ✅ Complete |
-| P1 | Core Motion | 34h | 📋 Planned |
+| P1 | Core Motion | 34h | ✅ Complete |
 | P2 | Driver Integration | 26h | 📋 Planned |
 | P3 | Sensor Integration | 22h | 📋 Planned |
 | P4 | Closed-Loop Control | 25h | 📋 Planned |
@@ -51,24 +51,48 @@ See [TASKS.md](../specs/TASKS.md) for detailed task breakdown.
 
 ---
 
+## Completed Milestones
+
+### v0.2.0 - P1 Core Motion (2025-05-27)
+
+**Achievements:**
+- ✅ IDriver abstract interface for motor drivers
+- ✅ GenericStepDirDriver GPIO implementation (16 tests)
+- ✅ MCPWM step pulse generator (1Hz-500kHz, 18 tests)
+- ✅ MotionController state machine (20 tests)
+- ✅ TrapezoidalTrajectory profiles (16 tests)
+- ✅ S-curve jerk-limited profiles (10 tests)
+- ✅ 93 total native tests passing
+
+### v0.1.0 - P0 Foundation (2025-05-26)
+
+**Achievements:**
+- ✅ PlatformIO ESP32-S3 configuration
+- ✅ FreeRTOS 5-task architecture
+- ✅ Python package structure
+- ✅ COBS + CRC-16 protocol (C and Python)
+- ✅ 35 tests passing (13 C + 22 Python)
+
+---
+
 ## Milestone Details
 
 ### M1: Motor Spins
 
-**Target:** — | **Status:** 📋 Planned
+**Target:** — | **Status:** 🟡 In Progress
 
 **Goals:**
-- [ ] ESP32-S3 PlatformIO project running
+- [x] ESP32-S3 PlatformIO project running
 - [ ] TMC2208 controlled via UART
 - [ ] Stepper motor executes open-loop moves
-- [ ] Trapezoidal and S-curve profiles working
+- [x] Trapezoidal and S-curve profiles working
 
 **Key Deliverables:**
 - `firmware/` with working motor control
 - TMC2208 microstepping and current limit
 - MCPWM step generation
 
-**Phases:** P0, P1, P2
+**Phases:** P0 ✅, P1 ✅, P2 (next)
 
 ---
 

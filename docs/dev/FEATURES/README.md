@@ -72,7 +72,8 @@ Create new feature files using this template:
 
 | Feature | Status | Priority |
 |---------|--------|----------|
-| — | — | — |
+| [P0-foundation.md](P0-foundation.md) | ✅ Complete | High |
+| [P1-core-motion.md](P1-core-motion.md) | ✅ Complete | High |
 
 ---
 

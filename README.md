@@ -2,7 +2,7 @@
 
 > A full-stack, DIY-friendly motion control system for precision multi-axis stepper motor coordination.
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)]()
+[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)]()
 [![Platform](https://img.shields.io/badge/platform-ESP32--S3-green.svg)]()
 [![SDD](https://img.shields.io/badge/developed_with-SDD_+_AI-purple.svg)]()
 
@@ -153,7 +153,8 @@ python -m gui
 | **Architecture** | ✅ Complete | Firmware + Software design, COBS protocol, multi-MCU sync |
 | **Tasks** | ✅ Complete | 10 phases, ~238 hours, 6 milestones defined |
 | **P0: Foundation** | ✅ Complete | FreeRTOS skeleton, Python packages, protocol, tests (35 passing) |
-| **P1: Core Motion** | 📋 Next | Trapezoidal profiles, step generation |
+| **P1: Core Motion** | ✅ Complete | Motion state machine, MCPWM step gen, trajectory profiles (93 tests) |
+| **P2: Driver Integration** | 📋 Next | TMC2208/2209 UART control, microstepping |
 
 See [docs/specs/](docs/specs/) for detailed specifications and [docs/dev/ROADMAP.md](docs/dev/ROADMAP.md) for milestones.
 
