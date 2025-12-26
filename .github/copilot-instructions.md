@@ -239,6 +239,18 @@ User -> Main Agent -> [Planner -> Worker -> Validator] -> Scribe -> Main Agent -
 
 ---
 
+## ⚠️ CRITICAL: No Auto-Commit
+
+**NEVER automatically make a git commit.** Always ask the user first:
+
+1. Complete your work (code, docs, etc.)
+2. Call `ask_user` to ask: "Ready to commit? I can commit with message 'X' or provide the message for you to commit manually."
+3. Only commit if user explicitly approves
+
+This prevents unwanted commits when the user has additional input or wants to review changes first.
+
+---
+
 ## Code Quality Triggers
 
 | Trigger | Action |
@@ -272,8 +284,7 @@ User -> Main Agent -> [Planner -> Worker -> Validator] -> Scribe -> Main Agent -
 ## Changelog
 
 | Version | Date | Changes |
-|---------|------|---------|
-| **5.0** | 2025-12-24 | Added SDD workflow, Scribe agent, standard repo structure |
+|---------|------|---------|| **5.0.1** | 2025-01-18 | Added No Auto-Commit rule, Zero Warnings Policy in Validator || **5.0** | 2025-12-24 | Added SDD workflow, Scribe agent, standard repo structure |
 | **4.0** | 2025-12-23 | Simplified to 3-rule structure, removed audit table and CEA/COA terminology |
 | 1.0 | [DATE] | Initial release |
 ````

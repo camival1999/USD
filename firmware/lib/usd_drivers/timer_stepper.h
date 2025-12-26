@@ -38,10 +38,10 @@ struct TimerConfig {
      * @brief Default configuration
      */
     static TimerConfig defaultConfig() {
-        return TimerConfig{
-            .timer_name = "step_timer",
-            .skip_unhandled = true
-        };
+        TimerConfig config;
+        config.timer_name = "step_timer";
+        config.skip_unhandled = true;
+        return config;
     }
 };
 
