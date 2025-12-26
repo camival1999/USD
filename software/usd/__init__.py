@@ -11,13 +11,27 @@ Modules:
     comm    - Serial/USB communication with MCU
     devices - High-level axis and robot abstractions
     utils   - Configuration, logging, helpers
+
+Example:
+    >>> import usd
+    >>> usd.__version__
+    '0.1.0'
 """
 
 __version__ = "0.1.0"
 __author__ = "Camilo Valencia"
 
-# Submodule imports (uncomment as modules are created)
-# from . import core
-# from . import comm
-# from . import devices
-# from . import utils
+# Submodule imports
+from . import core
+from . import comm
+from . import devices
+from . import utils
+
+__all__ = [
+    "__version__",
+    "__author__",
+    "core",
+    "comm", 
+    "devices",
+    "utils",
+]

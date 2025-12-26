@@ -35,12 +35,25 @@ pio run
 # Upload to connected board
 pio run --target upload
 
-# Run unit tests
-pio test
+# Run unit tests (native, requires GCC/MinGW on Windows)
+pio test -e native
 
 # Monitor serial output
 pio device monitor
 ```
+
+### Native Test Requirements (Windows)
+
+Native tests run on your development machine for fast protocol validation.
+They require a C/C++ compiler:
+
+1. **Install MinGW-w64** (recommended):
+   - Download from [winlibs.com](https://winlibs.com/) or use `winget install mingw`
+   - Add to PATH: `C:\mingw64\bin`
+
+2. **Or use Visual Studio Build Tools**:
+   - Already installed at `C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools`
+   - Requires additional PlatformIO configuration
 
 ---
 

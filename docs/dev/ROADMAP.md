@@ -1,10 +1,10 @@
 # Roadmap
 
-> **Last Updated:** 2025-01-17 | **Maintained by:** Scribe Agent
+> **Last Updated:** 2025-05-26 | **Maintained by:** Scribe Agent
 
 ---
 
-## Current Version: v0.0.0 (SDD Complete)
+## Current Version: v0.1.0 (P0 Foundation Complete)
 
 ---
 
@@ -32,11 +32,11 @@
 
 ## Phase Overview
 
-Total estimated: **~234 hours** for v1.0
+Total estimated: **~234 hours** for v1.0 | **Completed: ~16 hours**
 
 | Phase | Name | Hours | Status |
 |-------|------|-------|--------|
-| P0 | Foundation | 16h | 📋 Planned |
+| P0 | Foundation | 16h | ✅ Complete |
 | P1 | Core Motion | 34h | 📋 Planned |
 | P2 | Driver Integration | 26h | 📋 Planned |
 | P3 | Sensor Integration | 22h | 📋 Planned |

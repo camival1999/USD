@@ -9,12 +9,15 @@
 ```
 common/
 ├── README.md                   # This file
-├── protocols/                  # Message definitions, packet formats
-│   ├── messages.md            # Human-readable protocol spec
-│   └── messages.json          # Machine-parseable message definitions
-└── schemas/                    # Configuration schemas
-    └── config.schema.json     # Axis/robot configuration schema
+└── protocol/                   # Protocol implementations (C source)
+    ├── README.md              # Protocol documentation
+    ├── cobs.h / cobs.c        # COBS byte stuffing
+    ├── crc16.h / crc16.c      # CRC-16-CCITT checksums
+    └── messages.h             # Protocol message definitions
 ```
+
+> **Note:** Protocol files are mirrored to `firmware/lib/usd_protocol/` for PlatformIO builds.
+> Python implementations live in `software/usd/comm/`.
 
 ---
 
@@ -97,5 +100,6 @@ This folder defines these once, and code generators (or manual sync) ensure both
 ## Related
 
 - [ARCHITECTURE.md](../docs/specs/ARCHITECTURE.md) — Full system design
-- [firmware/lib/usd_comms/](../firmware/lib/usd_comms/) — Firmware protocol implementation
+- [firmware/lib/usd_protocol/](../firmware/lib/usd_protocol/) — Firmware protocol library (PlatformIO)
+- [software/usd/comm/](../software/usd/comm/) — Python protocol implementation
 - [software/usd/comm/](../software/usd/) — Python protocol implementation

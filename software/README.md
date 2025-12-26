@@ -30,14 +30,21 @@ software/
 ```bash
 # Development install (editable)
 cd software
+pip install -r requirements.txt
 pip install -e .
-
-# Run GUI
-python -m gui
 
 # Run tests
 pytest tests/
+
+# Run GUI (when ready)
+python -m gui
 ```
+
+### Dependencies
+
+See `requirements.txt` for development dependencies:
+- `pytest` — Test framework
+- `pytest-cov` — Coverage reporting
 
 ---
 

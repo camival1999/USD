@@ -1,6 +1,6 @@
 # Known Issues
 
-> **Last Updated:** YYYY-MM-DD | **Maintained by:** Scribe Agent
+> **Last Updated:** 2025-05-26 | **Maintained by:** Scribe Agent
 
 This file tracks known bugs, issues, and their status.
 
@@ -11,6 +11,19 @@ This file tracks known bugs, issues, and their status.
 | ID | Severity | Summary | Found | Status | Workaround |
 |----|----------|---------|-------|--------|------------|
 | — | — | No active issues | — | — | — |
+
+---
+
+## Recently Resolved
+
+| ID | Summary | Resolved | Version |
+|----|---------|----------|---------|
+| BUG-001 | Native PlatformIO tests require MinGW on Windows | 2025-05-26 | v0.1.0 |
+
+### BUG-001 Resolution
+- **Issue:** Native tests couldn't find COBS/CRC implementations
+- **Fix:** Created `lib/usd_protocol/` library with copied source files
+- **Note:** MinGW must be in PATH (e.g., `C:\msys64\ucrt64\bin`)
 
 ### Severity Levels
 

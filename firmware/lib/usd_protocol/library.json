@@ -1,0 +1,7 @@
+{
+    "name": "usd_protocol",
+    "version": "0.1.0",
+    "description": "USD Protocol Layer - COBS framing and CRC-16 checksums",
+    "keywords": ["protocol", "cobs", "crc16"],
+    "license": "Proprietary"
+}

@@ -48,10 +48,72 @@ USD/
 
 ### Prerequisites
 
-- [PlatformIO](https://platformio.org/) for firmware development
-- Python 3.10+ for host software
-- ESP32-S3 development board
-- TMC2209 or TMC2208 stepper driver
+| Tool | Version | Purpose |
+|------|---------|---------|
+| [PlatformIO](https://platformio.org/) | Latest | Firmware development (IDE or CLI) |
+| [Python](https://www.python.org/) | 3.10+ | Host software |
+| [MinGW-w64](https://code.visualstudio.com/docs/cpp/config-mingw) | GCC 12+ | Native tests on Windows |
+| ESP32-S3 board | N16R8 | Target MCU (16MB Flash, 8MB PSRAM) |
+| TMC2209 / TMC2208 | — | Stepper driver |
+
+### Development Setup
+
+#### 1. Clone and Create Virtual Environment
+
+```bash
+git clone https://github.com/camival1999/USD.git
+cd USD
+
+# Create Python virtual environment
+python -m venv .venv
+
+# Activate it (Windows)
+.venv\Scripts\activate
+
+# Activate it (Linux/macOS)
+source .venv/bin/activate
+```
+
+#### 2. Install Python Dependencies
+
+```bash
+cd software
+pip install -e ".[dev]"
+```
+
+This installs the USD package plus development tools (pytest, ruff, mypy).
+
+See [software/requirements.txt](software/requirements.txt) for explicit dependencies.
+
+#### 3. Install MinGW-w64 (Windows Only)
+
+Required for running native firmware tests on your development machine.
+
+Follow: [VS Code MinGW Setup Guide](https://code.visualstudio.com/docs/cpp/config-mingw)
+
+**Quick steps:**
+1. Install MSYS2 from https://www.msys2.org/
+2. Run `pacman -S mingw-w64-ucrt-x86_64-gcc` in MSYS2 terminal
+3. Add `C:\msys64\ucrt64\bin` to your system PATH
+4. Restart VS Code
+
+#### 4. Verify Setup
+
+```bash
+# Check GCC (for native tests)
+gcc --version
+
+# Run Python tests
+cd software
+pytest
+
+# Build firmware
+cd ../firmware
+pio run
+
+# Run native firmware tests
+pio test -e native
+```
 
 ### Firmware
 
@@ -90,7 +152,8 @@ python -m gui
 | **Requirements** | ✅ Complete | 70 requirements (37 Must, 26 Should, 7 Could) |
 | **Architecture** | ✅ Complete | Firmware + Software design, COBS protocol, multi-MCU sync |
 | **Tasks** | ✅ Complete | 10 phases, ~238 hours, 6 milestones defined |
-| **Build** | 🟡 Starting | Implementation begins with Phase P0 |
+| **P0: Foundation** | ✅ Complete | FreeRTOS skeleton, Python packages, protocol, tests (35 passing) |
+| **P1: Core Motion** | 📋 Next | Trapezoidal profiles, step generation |
 
 See [docs/specs/](docs/specs/) for detailed specifications and [docs/dev/ROADMAP.md](docs/dev/ROADMAP.md) for milestones.
 
@@ -124,4 +187,4 @@ For licensing inquiries: camival1999@gmail.com
 
 ---
 
-*Built with ❤️ and too many stepper motors.*
+*Built with love, AI and way too many stepper motors.*

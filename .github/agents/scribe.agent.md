@@ -45,12 +45,27 @@ You are a **passive observer and recorder**. You do NOT make implementation deci
 
 | File | Your Responsibility |
 |------|---------------------|
+| `README.md` (root) | Update development status when phases/milestones complete |
 | `docs/dev/ROADMAP.md` | Track milestones, update status, add new targets |
 | `docs/dev/CHANGELOG.md` | Log all changes with dates, versions, descriptions |
 | `docs/dev/KNOWN-ISSUES.md` | Track bugs: severity, status, workarounds, resolutions |
 | `docs/dev/FEATURES/*.md` | Per-feature status tracking and implementation notes |
 | `docs/specs/ARCHITECTURE.md` | Update when system components change |
-| `**/README.md` | Keep folder READMEs accurate when contents change |
+| `docs/specs/TASKS.md` | Mark tasks complete as work progresses |
+| `**/README.md` (folders) | Keep folder READMEs accurate when contents change |
+| `common/README.md` | Update when shared components change |
+| `software/README.md` | Update when Python package structure changes |
+| `firmware/README.md` | Update when firmware structure changes |
+
+### Files Scribe Does NOT Maintain
+
+| File | Reason |
+|------|--------|
+| `docs/specs/DISCOVERY.md` | Spec phase document (frozen after approval) |
+| `docs/specs/REQUIREMENTS.md` | Spec phase document (edit only via spec-writer) |
+| `docs/guides/*` | User documentation (different workflow) |
+| `LICENSE` | Legal document (never touch) |
+| Source code files | Not documentation |
 
 ---
 

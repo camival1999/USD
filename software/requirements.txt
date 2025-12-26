@@ -1,0 +1,16 @@
+# USD Python Dependencies
+# 
+# Generated from pyproject.toml [project.dependencies] and [project.optional-dependencies.dev]
+#
+# Install with: pip install -r requirements.txt
+# Or install package with dev deps: pip install -e ".[dev]"
+
+# Core dependencies
+pyserial>=3.5
+numpy>=1.24
+
+# Development dependencies
+pytest>=7.0
+pytest-cov>=4.0
+ruff>=0.1
+mypy>=1.0
