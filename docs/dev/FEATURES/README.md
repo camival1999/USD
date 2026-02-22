@@ -74,6 +74,7 @@ Create new feature files using this template:
 |---------|--------|----------|
 | [P0-foundation.md](P0-foundation.md) | ✅ Complete | High |
 | [P1-core-motion.md](P1-core-motion.md) | ✅ Complete | High |
+| [P2-driver-integration.md](P2-driver-integration.md) | ⏸️ Standby | High |
 
 ---
 

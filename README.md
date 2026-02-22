@@ -1,3 +1,7 @@
+> ⚠️ **Work In Progress** — This repository is in early stages under (somewhat) active development with no defined timeline. Features, architecture, and documentation may change significantly. Not recommended for production use.
+
+---
+
 # USD - Ultimate Stepper Driver
 
 > A full-stack, DIY-friendly motion control system for precision multi-axis stepper motor coordination.
